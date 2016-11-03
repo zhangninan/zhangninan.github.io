@@ -31,7 +31,16 @@ rvm rubygems latest 命令时
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-
+<script type="text/javascript">
+    function addBlankTargetForLinks () {
+       $('a[href^="http"]').each(function(){
+            >       $(this).attr('target', '_blank');
+            >   });
+    }
+    $(document).bind('DOMNodeInserted', function(event) {
+        addBlankTargetForLinks();
+        });
+    </script>
   
 
 </head>
@@ -172,6 +181,15 @@ cannot load such file -- mach (LoadError)
 </section>
 
 
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/117572330656637147263?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
 
 
 <section>

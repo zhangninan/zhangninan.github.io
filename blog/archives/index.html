@@ -10,7 +10,7 @@
 
   
   <meta name="description" content="Blog Archive 2016 Octopress + Github搭建个人博客
-Nov 01 2016 posted in octopress Recent Posts Octopress + Github搭建个人博客 Categories octopress (1) Tag Cloud &hellip;">
+Nov 01 2016 posted in octopress Recent Posts Octopress + Github搭建个人博客 Google+ Categories octopress (1) &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -30,7 +30,16 @@ Nov 01 2016 posted in octopress Recent Posts Octopress + Github搭建个人博�
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-
+<script type="text/javascript">
+    function addBlankTargetForLinks () {
+       $('a[href^="http"]').each(function(){
+            >       $(this).attr('target', '_blank');
+            >   });
+    }
+    $(document).bind('DOMNodeInserted', function(event) {
+        addBlankTargetForLinks();
+        });
+    </script>
   
 
 </head>
@@ -114,6 +123,15 @@ Nov 01 2016 posted in octopress Recent Posts Octopress + Github搭建个人博�
 </section>
 
 
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/117572330656637147263?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
 
 
 <section>
