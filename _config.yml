@@ -51,7 +51,11 @@ titlecase: true       # Converts page and post titles to titlecase
 
 # list each of the sidebar modules you want to include, in the order you want them to appear.
 # To add custom asides, create files in /source/_includes/custom/asides/ and add them to the list like 'custom/asides/custom_aside_name.html'
+<<<<<<< HEAD
 default_asides: [asides/recent_posts.html, asides/github.html, asides/delicious.html, asides/pinboard.html, asides/googleplus.html, custom/asides/category_list.html, custom/asides/tag_cloud.html, asides/weibo.html]
+=======
+default_asides: [asides/recent_posts.html, asides/github.html, asides/delicious.html, asides/pinboard.html, asides/googleplus.html, custom/asides/category_list.html]
+>>>>>>> 1331ad4d909e7940dd6ea64e59f95dbbe7462cff
 
 # Each layout uses the default asides, but they can have their own asides instead. Simply uncomment the lines below
 # and add an array with the asides you want to use.
@@ -91,8 +95,13 @@ delicious_user:
 delicious_count: 3
 
 # Disqus Comments
+<<<<<<< HEAD
 disqus_short_name: myblog
 disqus_show_comment_count: true
+=======
+disqus_short_name: zhangninan
+disqus_show_comment_count: false
+>>>>>>> 1331ad4d909e7940dd6ea64e59f95dbbe7462cff
 
 # Google Analytics
 google_analytics_tracking_id: UA-86831333-1
