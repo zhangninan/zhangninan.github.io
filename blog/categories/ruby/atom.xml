@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Ninan's Blog]]></title>
-  <link href="http://zhangninan.github.io/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Ruby, | Ninan's Blog]]></title>
+  <link href="http://zhangninan.github.io/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://zhangninan.github.io/"/>
   <updated>2016-11-03T02:22:42-04:00</updated>
   <id>http://zhangninan.github.io/</id>
@@ -22,13 +22,11 @@
 
 <p>具体搭建方法我是参考<a href="jonyfang.github.io">Jony Fang</a>的方法，本文主要记录配置Octopress的环境所遇到的问题。</p>
 
-<p>当我执行</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rvm rubygems latest</span></code></pre></td></tr></table></div></figure>
-
-
-<p>命令时
+<p>当我执行
+<code>
+rvm rubygems latest
+</code>
+命令时
 我的Mac自带ruby 2.0.0, 但是rvm没办法找到系统中安装的ruby，会报如下错误：</p>
 
 <pre><code>Error running 'env GEM_HOME=/Users/zhangninan/.rvm/gems/system@global
