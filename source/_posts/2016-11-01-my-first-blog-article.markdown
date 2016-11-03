@@ -3,7 +3,7 @@ layout: post
 title: "Octopress + github搭建个人博客"
 date: 2016-11-01 17:21:44 -0400
 comments: true
-categories: 
+categories: Octopress
 ---
 
 ###安装ruby出现的问题
@@ -50,4 +50,4 @@ homebrew的问题，我尝试了
 4. $ git clean -df
 5. $ brew update
 ~~~
-至此，再执行 ``rvm install ruby --head`` 就没有问题了。  
+至此，再执行 ``rvm install ruby --head`` 就没有问题了。 
