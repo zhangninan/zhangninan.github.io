@@ -4,10 +4,14 @@ title: "Octopress + github搭建个人博客"
 date: 2016-11-01 17:21:44 -0400
 comments: true
 categories: Octopress
+
+tags: [ruby, octopress]
+keywords: octopress, ruby, blog
+description: 安装ruby遇到的问题
 ---
 
 ###安装ruby出现的问题
-具体搭建方法我是参考[Jony Fang](jonyfang.github.io)的方法，本文主要记录配置Octopress的环境所遇到的问题。
+具体搭建方法我是参考[Jony Fang](http://jonyfang.github.io)的方法，本文主要记录配置Octopress的环境所遇到的问题。
 
 当我执行
 ```
