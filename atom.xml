@@ -4,7 +4,7 @@
   <title><![CDATA[Ninan's Blog]]></title>
   <link href="http://zhangninan.github.io/atom.xml" rel="self"/>
   <link href="http://zhangninan.github.io/"/>
-  <updated>2016-11-10T18:43:00-05:00</updated>
+  <updated>2016-11-10T18:44:34-05:00</updated>
   <id>http://zhangninan.github.io/</id>
   <author>
     <name><![CDATA[Ninan Zhang]]></name>
@@ -179,6 +179,9 @@ Visually, the graph looks like the following:</li>
      / \
      \_/
 </code></pre>
+
+<!-- more -->
+
 
 <p><code>Analyse:</code><br/>
 1. Find all nodes in the graph (BFS) <code>vector&lt;UndirectedGraphNode *&gt; findAllNodes(UndirectedGraphNode *node){}</code>
