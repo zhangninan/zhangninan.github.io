@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Algorithms | Ninan's Blog]]></title>
   <link href="http://zhangninan.github.io/blog/categories/algorithms/atom.xml" rel="self"/>
   <link href="http://zhangninan.github.io/"/>
-  <updated>2016-11-10T18:40:57-05:00</updated>
+  <updated>2016-11-10T18:43:00-05:00</updated>
   <id>http://zhangninan.github.io/</id>
   <author>
     <name><![CDATA[Ninan Zhang]]></name>
@@ -28,6 +28,9 @@ Find any topological order for the given graph.</p>
 You can assume that there is at least one topological
 order in the graph.
 </code></pre>
+
+<!-- more -->
+
 
 <p>Analyse:
 入度为0的点拿出来做为第一个点。用hashmap来存一个点的入度。<br/>
@@ -130,7 +133,7 @@ Visually, the graph looks like the following:</li>
 2. Deep copy the nodes  <code>void copyNodes(vector&lt;UndirectedGraphNode *&gt; nodes){}</code>
 3. Link node with its neighbors  <code>void findNeighbors(vector&lt;UndirectedGraphNode *&gt; nodes){}</code></p>
 
-<pre><code class="C++">/**
+<pre><code class="cpp">/**
  * Definition for undirected graph.
  * struct UndirectedGraphNode {
  *     int label;

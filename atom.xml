@@ -4,7 +4,7 @@
   <title><![CDATA[Ninan's Blog]]></title>
   <link href="http://zhangninan.github.io/atom.xml" rel="self"/>
   <link href="http://zhangninan.github.io/"/>
-  <updated>2016-11-10T18:40:57-05:00</updated>
+  <updated>2016-11-10T18:43:00-05:00</updated>
   <id>http://zhangninan.github.io/</id>
   <author>
     <name><![CDATA[Ninan Zhang]]></name>
@@ -28,6 +28,9 @@ Find any topological order for the given graph.</p>
 You can assume that there is at least one topological
 order in the graph.
 </code></pre>
+
+<!-- more -->
+
 
 <p>Analyse:
 入度为0的点拿出来做为第一个点。用hashmap来存一个点的入度。<br/>
@@ -182,77 +185,148 @@ Visually, the graph looks like the following:</li>
 2. Deep copy the nodes  <code>void copyNodes(vector&lt;UndirectedGraphNode *&gt; nodes){}</code>
 3. Link node with its neighbors  <code>void findNeighbors(vector&lt;UndirectedGraphNode *&gt; nodes){}</code></p>
 
-<pre><code class="C++">/**
- * Definition for undirected graph.
- * struct UndirectedGraphNode {
- *     int label;
- *     vector&lt;UndirectedGraphNode *&gt; neighbors;
- *     UndirectedGraphNode(int x) : label(x) {};
- * };
- */
-class Solution {
-private:
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm"> * Definition for undirected graph.</span>
+</span><span class='line'><span class="cm"> * struct UndirectedGraphNode {</span>
+</span><span class='line'><span class="cm"> *     int label;</span>
+</span><span class='line'><span class="cm"> *     vector&lt;UndirectedGraphNode *&gt; neighbors;</span>
+</span><span class='line'><span class="cm"> *     UndirectedGraphNode(int x) : label(x) {};</span>
+</span><span class='line'><span class="cm"> * };</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+</span><span class='line'><span class="k">private</span><span class="o">:</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">vector</span><span class="o">&lt;</span><span class="n">UndirectedGraphNode</span> <span class="o">*&gt;</span> <span class="n">findAllNodes</span><span class="p">(</span><span class="n">UndirectedGraphNode</span> <span class="o">*</span><span class="n">node</span><span class="p">){</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">//vector&lt;UndirectedGraphNode *&gt; res;</span>
+</span><span class='line'>        <span class="n">queue</span><span class="o">&lt;</span><span class="n">UndirectedGraphNode</span> <span class="o">*&gt;</span> <span class="n">q</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">set</span><span class="o">&lt;</span><span class="n">UndirectedGraphNode</span> <span class="o">*&gt;</span> <span class="n">set</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">node</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">set</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">node</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">while</span><span class="p">(</span><span class="n">q</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">){</span>
+</span><span class='line'>            <span class="n">UndirectedGraphNode</span> <span class="o">*</span><span class="n">tmp</span> <span class="o">=</span> <span class="n">q</span><span class="p">.</span><span class="n">front</span><span class="p">();</span> <span class="n">q</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+</span><span class='line'>            <span class="k">for</span><span class="p">(</span><span class="n">UndirectedGraphNode</span> <span class="o">*</span> <span class="nl">n</span> <span class="p">:</span> <span class="n">tmp</span><span class="o">-&gt;</span><span class="n">neighbors</span><span class="p">){</span>
+</span><span class='line'>                <span class="k">if</span><span class="p">(</span><span class="n">set</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">==</span> <span class="n">set</span><span class="p">.</span><span class="n">end</span><span class="p">()){</span>
+</span><span class='line'>                    <span class="n">q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+</span><span class='line'>                    <span class="n">set</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+</span><span class='line'>                <span class="p">}</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="n">vector</span><span class="o">&lt;</span><span class="n">UndirectedGraphNode</span> <span class="o">*&gt;</span> <span class="n">res</span><span class="p">(</span><span class="n">set</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">set</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">unordered_map</span><span class="o">&lt;</span><span class="n">UndirectedGraphNode</span> <span class="o">*</span><span class="p">,</span> <span class="n">UndirectedGraphNode</span> <span class="o">*&gt;</span> <span class="n">map</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">void</span> <span class="nf">copyNodes</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">UndirectedGraphNode</span> <span class="o">*&gt;</span> <span class="o">&amp;</span><span class="n">nodes</span><span class="p">){</span>
+</span><span class='line'>        <span class="k">for</span><span class="p">(</span><span class="n">UndirectedGraphNode</span><span class="o">*</span> <span class="nl">n</span> <span class="p">:</span> <span class="n">nodes</span><span class="p">){</span>
+</span><span class='line'>            <span class="n">map</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="n">UndirectedGraphNode</span><span class="p">(</span><span class="n">n</span><span class="o">-&gt;</span><span class="n">label</span><span class="p">);</span>
+</span><span class='line'>            <span class="c1">//cout&lt;&lt;map[n]-&gt;label&lt;&lt;endl;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">void</span> <span class="nf">findNeighbors</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">UndirectedGraphNode</span> <span class="o">*&gt;</span> <span class="n">nodes</span><span class="p">){</span>
+</span><span class='line'>        <span class="k">for</span><span class="p">(</span><span class="n">UndirectedGraphNode</span><span class="o">*</span> <span class="nl">nd</span><span class="p">:</span><span class="n">nodes</span><span class="p">){</span>
+</span><span class='line'>            <span class="n">UndirectedGraphNode</span><span class="o">*</span> <span class="n">newNode</span> <span class="o">=</span> <span class="n">map</span><span class="p">[</span><span class="n">nd</span><span class="p">];</span>
+</span><span class='line'>            <span class="n">vector</span><span class="o">&lt;</span><span class="n">UndirectedGraphNode</span> <span class="o">*&gt;</span> <span class="n">neighbors</span> <span class="o">=</span> <span class="n">nd</span><span class="o">-&gt;</span><span class="n">neighbors</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">for</span><span class="p">(</span><span class="n">UndirectedGraphNode</span><span class="o">*</span> <span class="nl">n</span> <span class="p">:</span> <span class="n">neighbors</span><span class="p">){</span>
+</span><span class='line'>                <span class="n">newNode</span><span class="o">-&gt;</span><span class="n">neighbors</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">map</span><span class="p">[</span><span class="n">n</span><span class="p">]);</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="k">public</span><span class="o">:</span>
+</span><span class='line'>    <span class="cm">/**</span>
+</span><span class='line'><span class="cm">     * @param node: A undirected graph node</span>
+</span><span class='line'><span class="cm">     * @return: A undirected graph node</span>
+</span><span class='line'><span class="cm">     */</span>
+</span><span class='line'>    <span class="n">UndirectedGraphNode</span> <span class="o">*</span><span class="n">cloneGraph</span><span class="p">(</span><span class="n">UndirectedGraphNode</span> <span class="o">*</span><span class="n">node</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span><span class="p">(</span><span class="n">node</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+</span><span class='line'>            <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">vector</span><span class="o">&lt;</span><span class="n">UndirectedGraphNode</span> <span class="o">*&gt;</span> <span class="n">nodes</span><span class="p">;</span>
+</span><span class='line'>        <span class="c1">//BFS find all nodes in the graph</span>
+</span><span class='line'>        <span class="n">nodes</span> <span class="o">=</span> <span class="n">findAllNodes</span><span class="p">(</span><span class="n">node</span><span class="p">);</span>
+</span><span class='line'>        <span class="c1">//mapping old nodes to new nodes</span>
+</span><span class='line'>        <span class="n">copyNodes</span><span class="p">(</span><span class="n">nodes</span><span class="p">);</span>
+</span><span class='line'>        <span class="c1">//link nodes</span>
+</span><span class='line'>        <span class="n">findNeighbors</span><span class="p">(</span><span class="n">nodes</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">map</span><span class="p">[</span><span class="n">node</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
 
-    vector&lt;UndirectedGraphNode *&gt; findAllNodes(UndirectedGraphNode *node){
-
-        //vector&lt;UndirectedGraphNode *&gt; res;
-        queue&lt;UndirectedGraphNode *&gt; q;
-        set&lt;UndirectedGraphNode *&gt; set;
-        q.push(node);
-        set.insert(node);
-
-        while(q.size() != 0){
-            UndirectedGraphNode *tmp = q.front(); q.pop();
-            for(UndirectedGraphNode * n : tmp-&gt;neighbors){
-                if(set.find(n) == set.end()){
-                    q.push(n);
-                    set.insert(n);
-                }
-            }
-        }
-        vector&lt;UndirectedGraphNode *&gt; res(set.begin(), set.end());
-        return res;
-
-    }
-
-    unordered_map&lt;UndirectedGraphNode *, UndirectedGraphNode *&gt; map;
-
-    void copyNodes(vector&lt;UndirectedGraphNode *&gt; &amp;nodes){
-        for(UndirectedGraphNode* n : nodes){
-            map[n] = new UndirectedGraphNode(n-&gt;label);
-            //cout&lt;&lt;map[n]-&gt;label&lt;&lt;endl;
-        }
-    }
-
-    void findNeighbors(vector&lt;UndirectedGraphNode *&gt; nodes){
-        for(UndirectedGraphNode* nd:nodes){
-            UndirectedGraphNode* newNode = map[nd];
-            vector&lt;UndirectedGraphNode *&gt; neighbors = nd-&gt;neighbors;
-            for(UndirectedGraphNode* n : neighbors){
-                newNode-&gt;neighbors.push_back(map[n]);
-            }
-        }
-    }
-public:
-    /**
-     * @param node: A undirected graph node
-     * @return: A undirected graph node
-     */
-    UndirectedGraphNode *cloneGraph(UndirectedGraphNode *node) {
-        if(node == NULL)
-            return NULL;
-        vector&lt;UndirectedGraphNode *&gt; nodes;
-        //BFS find all nodes in the graph
-        nodes = findAllNodes(node);
-        //mapping old nodes to new nodes
-        copyNodes(nodes);
-        //link nodes
-        findNeighbors(nodes);
-        return map[node];
-
-    }
-};
-</code></pre>
 
 <p>problems that I met:<br/>
 1. set. Using set can eliminate the visited nodes. Like 0&rsquo;s neighbor is 1 and 2, while 1&rsquo;s neighbor is 0 and 2. But the 0 and 2 is already found.
