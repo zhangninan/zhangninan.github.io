@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Algorithms | Ninan's Blog]]></title>
   <link href="http://zhangninan.github.io/blog/categories/algorithms/atom.xml" rel="self"/>
   <link href="http://zhangninan.github.io/"/>
-  <updated>2016-11-10T16:40:57-05:00</updated>
+  <updated>2016-11-10T18:40:57-05:00</updated>
   <id>http://zhangninan.github.io/</id>
   <author>
     <name><![CDATA[Ninan Zhang]]></name>
@@ -37,7 +37,7 @@ order in the graph.
 
 <p>扩展：通过入度可以判断一个有向图有没有环。 环中所有点入度都不为0.</p>
 
-<pre><code class="c++">/**
+<pre><code class="cpp">/**
  * Definition for Directed graph.
  * struct DirectedGraphNode {
  *     int label;

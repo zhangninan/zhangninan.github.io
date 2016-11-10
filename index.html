@@ -146,58 +146,110 @@ order in the graph.
 
 <p>扩展：通过入度可以判断一个有向图有没有环。 环中所有点入度都不为0.</p>
 
-<pre><code class="c++">/**
- * Definition for Directed graph.
- * struct DirectedGraphNode {
- *     int label;
- *     vector&lt;DirectedGraphNode *&gt; neighbors;
- *     DirectedGraphNode(int x) : label(x) {};
- * };
- */
-class Solution {
-public:
-    /**
-     * @param graph: A list of Directed graph node
-     * @return: Any topological order for the given graph.
-     */
-    vector&lt;DirectedGraphNode*&gt; topSort(vector&lt;DirectedGraphNode*&gt; graph) {
-        unordered_map&lt;DirectedGraphNode*, int&gt; map;
-        for(DirectedGraphNode* node : graph){
-            for(DirectedGraphNode* neighbor: node-&gt;neighbors){
-                if(map.find(neighbor) == map.end()){
-                    map[neighbor] = 1;
-                }
-                else{
-                    map[neighbor] = map[neighbor] + 1;
-                }
-            }
-        }
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm"> * Definition for Directed graph.</span>
+</span><span class='line'><span class="cm"> * struct DirectedGraphNode {</span>
+</span><span class='line'><span class="cm"> *     int label;</span>
+</span><span class='line'><span class="cm"> *     vector&lt;DirectedGraphNode *&gt; neighbors;</span>
+</span><span class='line'><span class="cm"> *     DirectedGraphNode(int x) : label(x) {};</span>
+</span><span class='line'><span class="cm"> * };</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+</span><span class='line'><span class="k">public</span><span class="o">:</span>
+</span><span class='line'>    <span class="cm">/**</span>
+</span><span class='line'><span class="cm">     * @param graph: A list of Directed graph node</span>
+</span><span class='line'><span class="cm">     * @return: Any topological order for the given graph.</span>
+</span><span class='line'><span class="cm">     */</span>
+</span><span class='line'>    <span class="n">vector</span><span class="o">&lt;</span><span class="n">DirectedGraphNode</span><span class="o">*&gt;</span> <span class="n">topSort</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">DirectedGraphNode</span><span class="o">*&gt;</span> <span class="n">graph</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">unordered_map</span><span class="o">&lt;</span><span class="n">DirectedGraphNode</span><span class="o">*</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">map</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">for</span><span class="p">(</span><span class="n">DirectedGraphNode</span><span class="o">*</span> <span class="nl">node</span> <span class="p">:</span> <span class="n">graph</span><span class="p">){</span>
+</span><span class='line'>            <span class="k">for</span><span class="p">(</span><span class="n">DirectedGraphNode</span><span class="o">*</span> <span class="nl">neighbor</span><span class="p">:</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">neighbors</span><span class="p">){</span>
+</span><span class='line'>                <span class="k">if</span><span class="p">(</span><span class="n">map</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">neighbor</span><span class="p">)</span> <span class="o">==</span> <span class="n">map</span><span class="p">.</span><span class="n">end</span><span class="p">()){</span>
+</span><span class='line'>                    <span class="n">map</span><span class="p">[</span><span class="n">neighbor</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>                <span class="p">}</span>
+</span><span class='line'>                <span class="k">else</span><span class="p">{</span>
+</span><span class='line'>                    <span class="n">map</span><span class="p">[</span><span class="n">neighbor</span><span class="p">]</span> <span class="o">=</span> <span class="n">map</span><span class="p">[</span><span class="n">neighbor</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>                <span class="p">}</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">vector</span><span class="o">&lt;</span><span class="n">DirectedGraphNode</span><span class="o">*&gt;</span> <span class="n">res</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">queue</span><span class="o">&lt;</span><span class="n">DirectedGraphNode</span><span class="o">*&gt;</span> <span class="n">q</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">for</span><span class="p">(</span><span class="n">DirectedGraphNode</span><span class="o">*</span> <span class="nl">node</span> <span class="p">:</span> <span class="n">graph</span><span class="p">){</span>
+</span><span class='line'>            <span class="k">if</span><span class="p">(</span><span class="n">map</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">node</span><span class="p">)</span> <span class="o">==</span> <span class="n">map</span><span class="p">.</span><span class="n">end</span><span class="p">()){</span>
+</span><span class='line'>                <span class="n">q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">node</span><span class="p">);</span>
+</span><span class='line'>                <span class="n">res</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">node</span><span class="p">);</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">while</span><span class="p">(</span><span class="n">q</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">DirectedGraphNode</span><span class="o">*</span> <span class="n">node</span> <span class="o">=</span> <span class="n">q</span><span class="p">.</span><span class="n">front</span><span class="p">();</span> <span class="n">q</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+</span><span class='line'>            <span class="k">for</span><span class="p">(</span><span class="n">DirectedGraphNode</span><span class="o">*</span> <span class="nl">neighbor</span><span class="p">:</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">neighbors</span><span class="p">){</span>
+</span><span class='line'>                <span class="n">map</span><span class="p">[</span><span class="n">neighbor</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>                <span class="k">if</span><span class="p">(</span><span class="n">map</span><span class="p">[</span><span class="n">neighbor</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+</span><span class='line'>                    <span class="n">q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">neighbor</span><span class="p">);</span>
+</span><span class='line'>                    <span class="n">res</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">neighbor</span><span class="p">);</span>
+</span><span class='line'>                <span class="p">}</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">res</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
 
-        vector&lt;DirectedGraphNode*&gt; res;
-        queue&lt;DirectedGraphNode*&gt; q;
-        for(DirectedGraphNode* node : graph){
-            if(map.find(node) == map.end()){
-                q.push(node);
-                res.push_back(node);
-            }
-        }
-
-
-        while(q.size() != 0) {
-            DirectedGraphNode* node = q.front(); q.pop();
-            for(DirectedGraphNode* neighbor: node-&gt;neighbors){
-                map[neighbor] -= 1;
-                if(map[neighbor] == 0){
-                    q.push(neighbor);
-                    res.push_back(neighbor);
-                }
-            }
-        }
-        return res;  
-
-    }
-};
-</code></pre>
 </div>
   
   
