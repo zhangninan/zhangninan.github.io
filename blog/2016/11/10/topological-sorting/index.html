@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Octopress + Github搭建个人博客 - Ninan's Blog</title>
+  <title>Topological Sorting - Ninan's Blog</title>
   <meta name="author" content="Ninan Zhang">
 
   
-  <meta name="description" content="安装ruby遇到的问题">
-  <meta name="keywords" content="octopress, ruby, blog">
+  <meta name="description" content="topological sorting">
+  <meta name="keywords" content="graph, algorithms, lintcode, leetcode">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://zhangninan.github.io/blog/2016/11/01/my-first-blog-article/">
+  <link rel="canonical" href="http://zhangninan.github.io/blog/2016/11/10/topological-sorting/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Ninan's Blog" type="application/atom+xml">
@@ -101,7 +101,7 @@
   
   <header>
     
-      <h1 class="entry-title">Octopress + Github搭建个人博客</h1>
+      <h1 class="entry-title">Topological Sorting</h1>
     
     
       <p class="meta">
@@ -110,7 +110,7 @@
 
 
 
-<time class='entry-date' datetime='2016-11-01T17:21:44-04:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>5:21 pm</span></time>
+<time class='entry-date' datetime='2016-11-10T16:28:45-05:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>4:28 pm</span></time>
         
            | <a href="#disqus_thread"
              data-disqus-identifier="http://zhangninan.github.io">Comments</a>
@@ -120,57 +120,77 @@
   </header>
 
 
-<div class="entry-content"><h3>安装ruby出现的问题</h3>
+<div class="entry-content"><p>Given an directed graph, a topological order of the graph nodes is defined as follow:</p>
 
-<p>具体搭建方法我是参考<a href="http://jonyfang.github.io">Jony Fang</a>的方法，本文主要记录配置Octopress的环境所遇到的问题。</p>
+<p>For each directed edge A -> B in graph, A must before B in the order list.
+The first node in the order can be any node in the graph with no nodes direct to it.
+Find any topological order for the given graph.</p>
 
-<p>当我执行</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rvm rubygems latest</span></code></pre></td></tr></table></div></figure>
-
-
-<p>命令时
-我的Mac自带ruby 2.0.0, 但是rvm没办法找到系统中安装的ruby，会报如下错误：</p>
-
-<pre><code>Error running 'env GEM_HOME=/Users/zhangninan/.rvm/gems/system@global
-GEM_PATH= ~/.rvm/rubies/system/bin/ruby -d ~/.rvm/src/rubygems-2.4.8/setup.rb --no-document',
-showing last 15 lines of ~/.rvm/log/1477946222_system/rubygems.install.log
-[2016-10-31 16:37:02] ~/.rvm/rubies/system/bin/ruby
-current path: ~/.rvm/src/rubygems-2.4.8
-PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/texbin:/Users/zhangninan/.rvm/bin
-command(7): env GEM_HOME=~/.rvm/gems/system@global GEM_PATH= ~/.rvm/rubies/system/bin/ruby -d ~/.rvm/src/rubygems-2.4.8/setup.rb --no-document
-env: ~/.rvm/rubies/system/bin/ruby: No such file or directory
+<pre><code>Notice
+You can assume that there is at least one topological
+order in the graph.
 </code></pre>
 
-<p>解决办法是在rvm里面再安装一个ruby<br/>
-command： <code>rvm install ruby --head</code><br/>
-但是，又出现了<code>\bin</code>无法写入的问题：</p>
+<p>Analyse:
+入度为0的点拿出来做为第一个点。用hashmap来存一个点的入度。<br/>
+1. Using hashmap to store every node&rsquo;s indegree;   <br/>
+2. Find the node whose indegree is 0.   <br/>
+3. BFS from the node. When traverse to a neighbor of the node, minus 1 the value of map[neighbor], when the value was minus to 0, add it to the queue and the result vector.</p>
 
-<pre><code>ERROR: '/bin' is not writable - it is required for Homebrew, try 'brew doctor' to fix it!
-Requirements installation failed with status: 1.
+<p>扩展：通过入度可以判断一个有向图有没有环。 环中所有点入度都不为0.</p>
+
+<pre><code class="c++">/**
+ * Definition for Directed graph.
+ * struct DirectedGraphNode {
+ *     int label;
+ *     vector&lt;DirectedGraphNode *&gt; neighbors;
+ *     DirectedGraphNode(int x) : label(x) {};
+ * };
+ */
+class Solution {
+public:
+    /**
+     * @param graph: A list of Directed graph node
+     * @return: Any topological order for the given graph.
+     */
+    vector&lt;DirectedGraphNode*&gt; topSort(vector&lt;DirectedGraphNode*&gt; graph) {
+        unordered_map&lt;DirectedGraphNode*, int&gt; map;
+        for(DirectedGraphNode* node : graph){
+            for(DirectedGraphNode* neighbor: node-&gt;neighbors){
+                if(map.find(neighbor) == map.end()){
+                    map[neighbor] = 1;
+                }
+                else{
+                    map[neighbor] = map[neighbor] + 1;
+                }
+            }
+        }
+
+        vector&lt;DirectedGraphNode*&gt; res;
+        queue&lt;DirectedGraphNode*&gt; q;
+        for(DirectedGraphNode* node : graph){
+            if(map.find(node) == map.end()){
+                q.push(node);
+                res.push_back(node);
+            }
+        }
+
+
+        while(q.size() != 0) {
+            DirectedGraphNode* node = q.front(); q.pop();
+            for(DirectedGraphNode* neighbor: node-&gt;neighbors){
+                map[neighbor] -= 1;
+                if(map[neighbor] == 0){
+                    q.push(neighbor);
+                    res.push_back(neighbor);
+                }
+            }
+        }
+        return res;  
+
+    }
+};
 </code></pre>
-
-<p>尝试了<code>brew doctor</code>，报错：</p>
-
-<pre><code>/System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/lib/
-ruby/2.0.0/rubygems/core_ext/kernel_require.rb:55:in `require': 
-cannot load such file -- mach (LoadError)
-</code></pre>
-
-<p>homebrew的问题，我尝试了<br/>
-<code>$ sudo chown -R $(whoami):admin /usr/local</code></p>
-
-<p>但是还是没有办法安装。我又从<a href="http://stackoverflow.com/questions/24652996/homebrew-not-working-on-osx">stackoverflow</a>上找到了解决办法。</p>
-
-<pre><code>1. open terminal  
-2. $ cd /usr/local  
-3. $ git reset --hard  
-4. $ git clean -df
-5. $ brew update
-</code></pre>
-
-<p>至此，再执行 <code>rvm install ruby --head</code> 就没有问题了。</p>
 </div>
 
 
@@ -186,12 +206,12 @@ cannot load such file -- mach (LoadError)
 
 
 
-<time class='entry-date' datetime='2016-11-01T17:21:44-04:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>5:21 pm</span></time>
+<time class='entry-date' datetime='2016-11-10T16:28:45-05:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>4:28 pm</span></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/octopress/'>octopress</a>
+    <a class='category' href='/blog/categories/algorithms/'>algorithms</a>
   
 </span>
 
@@ -200,7 +220,7 @@ cannot load such file -- mach (LoadError)
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://zhangninan.github.io/blog/2016/11/01/my-first-blog-article/" data-via="" data-counturl="http://zhangninan.github.io/blog/2016/11/01/my-first-blog-article/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://zhangninan.github.io/blog/2016/11/10/topological-sorting/" data-via="" data-counturl="http://zhangninan.github.io/blog/2016/11/10/topological-sorting/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -213,8 +233,8 @@ cannot load such file -- mach (LoadError)
     
     <p class="meta">
       
+        <a class="basic-alignment left" href="/blog/2016/11/06/clone-graph/" title="Previous Post: Clone Graph">&laquo; Clone Graph</a>
       
-        <a class="basic-alignment right" href="/blog/2016/11/06/clone-graph/" title="Next Post: Clone Graph">Clone Graph &raquo;</a>
       
     </p>
   </footer>
@@ -296,8 +316,8 @@ cannot load such file -- mach (LoadError)
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://zhangninan.github.io/blog/2016/11/01/my-first-blog-article/';
-        var disqus_url = 'http://zhangninan.github.io/blog/2016/11/01/my-first-blog-article/';
+        var disqus_identifier = 'http://zhangninan.github.io/blog/2016/11/10/topological-sorting/';
+        var disqus_url = 'http://zhangninan.github.io/blog/2016/11/10/topological-sorting/';
         var disqus_script = 'embed.js';
       
     (function () {
