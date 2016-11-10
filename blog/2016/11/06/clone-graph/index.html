@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Octopress + Github搭建个人博客 - Ninan's Blog</title>
+  <title>Clone Graph - Ninan's Blog</title>
   <meta name="author" content="Ninan Zhang">
 
   
-  <meta name="description" content="安装ruby遇到的问题">
-  <meta name="keywords" content="octopress, ruby, blog">
+  <meta name="description" content="Clone an undirected graph. Each node in the graph contains a label and a list of its neighbors. How we serialize an undirected graph: Nodes are &hellip;">
+  
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://zhangninan.github.io/blog/2016/11/01/my-first-blog-article/">
+  <link rel="canonical" href="http://zhangninan.github.io/blog/2016/11/06/clone-graph/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Ninan's Blog" type="application/atom+xml">
@@ -101,7 +101,7 @@
   
   <header>
     
-      <h1 class="entry-title">Octopress + Github搭建个人博客</h1>
+      <h1 class="entry-title">Clone Graph</h1>
     
     
       <p class="meta">
@@ -110,7 +110,7 @@
 
 
 
-<time class='entry-date' datetime='2016-11-01T17:21:44-04:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>5:21 pm</span></time>
+<time class='entry-date' datetime='2016-11-06T18:32:33-05:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>6:32 pm</span></time>
         
            | <a href="#disqus_thread"
              data-disqus-identifier="http://zhangninan.github.io">Comments</a>
@@ -120,57 +120,116 @@
   </header>
 
 
-<div class="entry-content"><h3>安装ruby出现的问题</h3>
+<div class="entry-content"><p>Clone an undirected graph. Each node in the graph contains a label and a list of its neighbors.</p>
 
-<p>具体搭建方法我是参考<a href="http://jonyfang.github.io">Jony Fang</a>的方法，本文主要记录配置Octopress的环境所遇到的问题。</p>
+<p>How we serialize an undirected graph:</p>
 
-<p>当我执行</p>
+<p>Nodes are labeled uniquely.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rvm rubygems latest</span></code></pre></td></tr></table></div></figure>
+<p>We use # as a separator for each node, and , as a separator for node label and each neighbor of the node.</p>
+
+<p>As an example, consider the serialized graph {0,1,2#1,2#2,2}.</p>
+
+<p>The graph has a total of three nodes, and therefore contains three parts as separated by #.</p>
+
+<ol>
+<li>First node is labeled as 0. Connect node 0 to both nodes 1 and 2.</li>
+<li>Second node is labeled as 1. Connect node 1 to node 2.</li>
+<li>Third node is labeled as 2. Connect node 2 to node 2 (itself), thus forming a self-cycle.
+Visually, the graph looks like the following:</li>
+</ol>
 
 
-<p>命令时
-我的Mac自带ruby 2.0.0, 但是rvm没办法找到系统中安装的ruby，会报如下错误：</p>
-
-<pre><code>Error running 'env GEM_HOME=/Users/zhangninan/.rvm/gems/system@global
-GEM_PATH= ~/.rvm/rubies/system/bin/ruby -d ~/.rvm/src/rubygems-2.4.8/setup.rb --no-document',
-showing last 15 lines of ~/.rvm/log/1477946222_system/rubygems.install.log
-[2016-10-31 16:37:02] ~/.rvm/rubies/system/bin/ruby
-current path: ~/.rvm/src/rubygems-2.4.8
-PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/texbin:/Users/zhangninan/.rvm/bin
-command(7): env GEM_HOME=~/.rvm/gems/system@global GEM_PATH= ~/.rvm/rubies/system/bin/ruby -d ~/.rvm/src/rubygems-2.4.8/setup.rb --no-document
-env: ~/.rvm/rubies/system/bin/ruby: No such file or directory
+<pre><code>   1  
+  / \  
+ /   \
+0 --- 2
+     / \
+     \_/
 </code></pre>
 
-<p>解决办法是在rvm里面再安装一个ruby<br/>
-command： <code>rvm install ruby --head</code><br/>
-但是，又出现了<code>\bin</code>无法写入的问题：</p>
+<p><code>Analyse:</code><br/>
+1. Find all nodes in the graph (BFS) <code>vector&lt;UndirectedGraphNode *&gt; findAllNodes(UndirectedGraphNode *node){}</code>
+2. Deep copy the nodes  <code>void copyNodes(vector&lt;UndirectedGraphNode *&gt; nodes){}</code>
+3. Link node with its neighbors  <code>void findNeighbors(vector&lt;UndirectedGraphNode *&gt; nodes){}</code></p>
 
-<pre><code>ERROR: '/bin' is not writable - it is required for Homebrew, try 'brew doctor' to fix it!
-Requirements installation failed with status: 1.
+<pre><code class="C++">/**
+ * Definition for undirected graph.
+ * struct UndirectedGraphNode {
+ *     int label;
+ *     vector&lt;UndirectedGraphNode *&gt; neighbors;
+ *     UndirectedGraphNode(int x) : label(x) {};
+ * };
+ */
+class Solution {
+private:
+
+    vector&lt;UndirectedGraphNode *&gt; findAllNodes(UndirectedGraphNode *node){
+
+        //vector&lt;UndirectedGraphNode *&gt; res;
+        queue&lt;UndirectedGraphNode *&gt; q;
+        set&lt;UndirectedGraphNode *&gt; set;
+        q.push(node);
+        set.insert(node);
+
+        while(q.size() != 0){
+            UndirectedGraphNode *tmp = q.front(); q.pop();
+            for(UndirectedGraphNode * n : tmp-&gt;neighbors){
+                if(set.find(n) == set.end()){
+                    q.push(n);
+                    set.insert(n);
+                }
+            }
+        }
+        vector&lt;UndirectedGraphNode *&gt; res(set.begin(), set.end());
+        return res;
+
+    }
+
+    unordered_map&lt;UndirectedGraphNode *, UndirectedGraphNode *&gt; map;
+
+    void copyNodes(vector&lt;UndirectedGraphNode *&gt; &amp;nodes){
+        for(UndirectedGraphNode* n : nodes){
+            map[n] = new UndirectedGraphNode(n-&gt;label);
+            //cout&lt;&lt;map[n]-&gt;label&lt;&lt;endl;
+        }
+    }
+
+    void findNeighbors(vector&lt;UndirectedGraphNode *&gt; nodes){
+        for(UndirectedGraphNode* nd:nodes){
+            UndirectedGraphNode* newNode = map[nd];
+            vector&lt;UndirectedGraphNode *&gt; neighbors = nd-&gt;neighbors;
+            for(UndirectedGraphNode* n : neighbors){
+                newNode-&gt;neighbors.push_back(map[n]);
+            }
+        }
+    }
+public:
+    /**
+     * @param node: A undirected graph node
+     * @return: A undirected graph node
+     */
+    UndirectedGraphNode *cloneGraph(UndirectedGraphNode *node) {
+        if(node == NULL)
+            return NULL;
+        vector&lt;UndirectedGraphNode *&gt; nodes;
+        //BFS find all nodes in the graph
+        nodes = findAllNodes(node);
+        //mapping old nodes to new nodes
+        copyNodes(nodes);
+        //link nodes
+        findNeighbors(nodes);
+        return map[node];
+
+    }
+};
 </code></pre>
 
-<p>尝试了<code>brew doctor</code>，报错：</p>
+<p>problems that I met:<br/>
+1. set. Using set can eliminate the visited nodes. Like 0&rsquo;s neighbor is 1 and 2, while 1&rsquo;s neighbor is 0 and 2. But the 0 and 2 is already found.
+2. deep copy. Pay attention to the neighbors of old nodes and new nodes. <code>newNode-&gt;neighbors.push_back(map[n]);</code></p>
 
-<pre><code>/System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/lib/
-ruby/2.0.0/rubygems/core_ext/kernel_require.rb:55:in `require': 
-cannot load such file -- mach (LoadError)
-</code></pre>
-
-<p>homebrew的问题，我尝试了<br/>
-<code>$ sudo chown -R $(whoami):admin /usr/local</code></p>
-
-<p>但是还是没有办法安装。我又从<a href="http://stackoverflow.com/questions/24652996/homebrew-not-working-on-osx">stackoverflow</a>上找到了解决办法。</p>
-
-<pre><code>1. open terminal  
-2. $ cd /usr/local  
-3. $ git reset --hard  
-4. $ git clean -df
-5. $ brew update
-</code></pre>
-
-<p>至此，再执行 <code>rvm install ruby --head</code> 就没有问题了。</p>
+<p>There are other methods like recursion DFS, non-recursion DFS and using array instead of queue.</p>
 </div>
 
 
@@ -186,12 +245,12 @@ cannot load such file -- mach (LoadError)
 
 
 
-<time class='entry-date' datetime='2016-11-01T17:21:44-04:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>5:21 pm</span></time>
+<time class='entry-date' datetime='2016-11-06T18:32:33-05:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>6:32 pm</span></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/octopress/'>octopress</a>
+    <a class='category' href='/blog/categories/algorithms/'>algorithms</a>
   
 </span>
 
@@ -200,7 +259,7 @@ cannot load such file -- mach (LoadError)
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://zhangninan.github.io/blog/2016/11/01/my-first-blog-article/" data-via="" data-counturl="http://zhangninan.github.io/blog/2016/11/01/my-first-blog-article/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://zhangninan.github.io/blog/2016/11/06/clone-graph/" data-via="" data-counturl="http://zhangninan.github.io/blog/2016/11/06/clone-graph/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -213,8 +272,8 @@ cannot load such file -- mach (LoadError)
     
     <p class="meta">
       
+        <a class="basic-alignment left" href="/blog/2016/11/01/my-first-blog-article/" title="Previous Post: Octopress + github搭建个人博客">&laquo; Octopress + github搭建个人博客</a>
       
-        <a class="basic-alignment right" href="/blog/2016/11/06/clone-graph/" title="Next Post: Clone Graph">Clone Graph &raquo;</a>
       
     </p>
   </footer>
@@ -292,8 +351,8 @@ cannot load such file -- mach (LoadError)
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://zhangninan.github.io/blog/2016/11/01/my-first-blog-article/';
-        var disqus_url = 'http://zhangninan.github.io/blog/2016/11/01/my-first-blog-article/';
+        var disqus_identifier = 'http://zhangninan.github.io/blog/2016/11/06/clone-graph/';
+        var disqus_url = 'http://zhangninan.github.io/blog/2016/11/06/clone-graph/';
         var disqus_script = 'embed.js';
       
     (function () {

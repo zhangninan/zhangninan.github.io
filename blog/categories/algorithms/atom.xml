@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Ninan's Blog]]></title>
-  <link href="http://zhangninan.github.io/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Algorithms | Ninan's Blog]]></title>
+  <link href="http://zhangninan.github.io/blog/categories/algorithms/atom.xml" rel="self"/>
   <link href="http://zhangninan.github.io/"/>
   <updated>2016-11-09T19:23:19-05:00</updated>
   <id>http://zhangninan.github.io/</id>
@@ -128,65 +128,6 @@ public:
 2. deep copy. Pay attention to the neighbors of old nodes and new nodes. <code>newNode-&gt;neighbors.push_back(map[n]);</code></p>
 
 <p>There are other methods like recursion DFS, non-recursion DFS and using array instead of queue.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Octopress + Github搭建个人博客]]></title>
-    <link href="http://zhangninan.github.io/blog/2016/11/01/my-first-blog-article/"/>
-    <updated>2016-11-01T17:21:44-04:00</updated>
-    <id>http://zhangninan.github.io/blog/2016/11/01/my-first-blog-article</id>
-    <content type="html"><![CDATA[<h3>安装ruby出现的问题</h3>
-
-<p>具体搭建方法我是参考<a href="http://jonyfang.github.io">Jony Fang</a>的方法，本文主要记录配置Octopress的环境所遇到的问题。</p>
-
-<p>当我执行</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rvm rubygems latest</span></code></pre></td></tr></table></div></figure>
-
-
-<p>命令时
-我的Mac自带ruby 2.0.0, 但是rvm没办法找到系统中安装的ruby，会报如下错误：</p>
-
-<pre><code>Error running 'env GEM_HOME=/Users/zhangninan/.rvm/gems/system@global
-GEM_PATH= ~/.rvm/rubies/system/bin/ruby -d ~/.rvm/src/rubygems-2.4.8/setup.rb --no-document',
-showing last 15 lines of ~/.rvm/log/1477946222_system/rubygems.install.log
-[2016-10-31 16:37:02] ~/.rvm/rubies/system/bin/ruby
-current path: ~/.rvm/src/rubygems-2.4.8
-PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/texbin:/Users/zhangninan/.rvm/bin
-command(7): env GEM_HOME=~/.rvm/gems/system@global GEM_PATH= ~/.rvm/rubies/system/bin/ruby -d ~/.rvm/src/rubygems-2.4.8/setup.rb --no-document
-env: ~/.rvm/rubies/system/bin/ruby: No such file or directory
-</code></pre>
-
-<p>解决办法是在rvm里面再安装一个ruby<br/>
-command： <code>rvm install ruby --head</code><br/>
-但是，又出现了<code>\bin</code>无法写入的问题：</p>
-
-<pre><code>ERROR: '/bin' is not writable - it is required for Homebrew, try 'brew doctor' to fix it!
-Requirements installation failed with status: 1.
-</code></pre>
-
-<p>尝试了<code>brew doctor</code>，报错：</p>
-
-<pre><code>/System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/lib/
-ruby/2.0.0/rubygems/core_ext/kernel_require.rb:55:in `require': 
-cannot load such file -- mach (LoadError)
-</code></pre>
-
-<p>homebrew的问题，我尝试了<br/>
-<code>$ sudo chown -R $(whoami):admin /usr/local</code></p>
-
-<p>但是还是没有办法安装。我又从<a href="http://stackoverflow.com/questions/24652996/homebrew-not-working-on-osx">stackoverflow</a>上找到了解决办法。</p>
-
-<pre><code>1. open terminal  
-2. $ cd /usr/local  
-3. $ git reset --hard  
-4. $ git clean -df
-5. $ brew update
-</code></pre>
-
-<p>至此，再执行 <code>rvm install ruby --head</code> 就没有问题了。</p>
 ]]></content>
   </entry>
   

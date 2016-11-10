@@ -9,9 +9,7 @@
   <meta name="author" content="Ninan Zhang">
 
   
-  <meta name="description" content="安装ruby出现的问题 具体搭建方法我是参考Jony Fang的方法，本文主要记录配置Octopress的环境所遇到的问题。 当我执行 1
-rvm rubygems latest 命令时
-我的Mac自带ruby 2.0.0, 但是rvm没办法找到系统中安装的ruby，会报如下错误： Error &hellip;">
+  <meta name="description" content="Clone an undirected graph. Each node in the graph contains a label and a list of its neighbors. How we serialize an undirected graph: Nodes are &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -98,8 +96,153 @@ rvm rubygems latest 命令时
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <head>
+<script src="//fast.eager.io/g2uYaoVRob.js"></script>
+</head>
+
+<div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/11/06/clone-graph/">Clone Graph</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-11-06T18:32:33-05:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>6:32 pm</span></time>
+        
+           | <a href="/blog/2016/11/06/clone-graph/#disqus_thread"
+             data-disqus-identifier="http://zhangninan.github.io/blog/2016/11/06/clone-graph/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Clone an undirected graph. Each node in the graph contains a label and a list of its neighbors.</p>
+
+<p>How we serialize an undirected graph:</p>
+
+<p>Nodes are labeled uniquely.</p>
+
+<p>We use # as a separator for each node, and , as a separator for node label and each neighbor of the node.</p>
+
+<p>As an example, consider the serialized graph {0,1,2#1,2#2,2}.</p>
+
+<p>The graph has a total of three nodes, and therefore contains three parts as separated by #.</p>
+
+<ol>
+<li>First node is labeled as 0. Connect node 0 to both nodes 1 and 2.</li>
+<li>Second node is labeled as 1. Connect node 1 to node 2.</li>
+<li>Third node is labeled as 2. Connect node 2 to node 2 (itself), thus forming a self-cycle.
+Visually, the graph looks like the following:</li>
+</ol>
+
+
+<pre><code>   1  
+  / \  
+ /   \
+0 --- 2
+     / \
+     \_/
+</code></pre>
+
+<p><code>Analyse:</code><br/>
+1. Find all nodes in the graph (BFS) <code>vector&lt;UndirectedGraphNode *&gt; findAllNodes(UndirectedGraphNode *node){}</code>
+2. Deep copy the nodes  <code>void copyNodes(vector&lt;UndirectedGraphNode *&gt; nodes){}</code>
+3. Link node with its neighbors  <code>void findNeighbors(vector&lt;UndirectedGraphNode *&gt; nodes){}</code></p>
+
+<pre><code class="C++">/**
+ * Definition for undirected graph.
+ * struct UndirectedGraphNode {
+ *     int label;
+ *     vector&lt;UndirectedGraphNode *&gt; neighbors;
+ *     UndirectedGraphNode(int x) : label(x) {};
+ * };
+ */
+class Solution {
+private:
+
+    vector&lt;UndirectedGraphNode *&gt; findAllNodes(UndirectedGraphNode *node){
+
+        //vector&lt;UndirectedGraphNode *&gt; res;
+        queue&lt;UndirectedGraphNode *&gt; q;
+        set&lt;UndirectedGraphNode *&gt; set;
+        q.push(node);
+        set.insert(node);
+
+        while(q.size() != 0){
+            UndirectedGraphNode *tmp = q.front(); q.pop();
+            for(UndirectedGraphNode * n : tmp-&gt;neighbors){
+                if(set.find(n) == set.end()){
+                    q.push(n);
+                    set.insert(n);
+                }
+            }
+        }
+        vector&lt;UndirectedGraphNode *&gt; res(set.begin(), set.end());
+        return res;
+
+    }
+
+    unordered_map&lt;UndirectedGraphNode *, UndirectedGraphNode *&gt; map;
+
+    void copyNodes(vector&lt;UndirectedGraphNode *&gt; &amp;nodes){
+        for(UndirectedGraphNode* n : nodes){
+            map[n] = new UndirectedGraphNode(n-&gt;label);
+            //cout&lt;&lt;map[n]-&gt;label&lt;&lt;endl;
+        }
+    }
+
+    void findNeighbors(vector&lt;UndirectedGraphNode *&gt; nodes){
+        for(UndirectedGraphNode* nd:nodes){
+            UndirectedGraphNode* newNode = map[nd];
+            vector&lt;UndirectedGraphNode *&gt; neighbors = nd-&gt;neighbors;
+            for(UndirectedGraphNode* n : neighbors){
+                newNode-&gt;neighbors.push_back(map[n]);
+            }
+        }
+    }
+public:
+    /**
+     * @param node: A undirected graph node
+     * @return: A undirected graph node
+     */
+    UndirectedGraphNode *cloneGraph(UndirectedGraphNode *node) {
+        if(node == NULL)
+            return NULL;
+        vector&lt;UndirectedGraphNode *&gt; nodes;
+        //BFS find all nodes in the graph
+        nodes = findAllNodes(node);
+        //mapping old nodes to new nodes
+        copyNodes(nodes);
+        //link nodes
+        findNeighbors(nodes);
+        return map[node];
+
+    }
+};
+</code></pre>
+
+<p>problems that I met:<br/>
+1. set. Using set can eliminate the visited nodes. Like 0&rsquo;s neighbor is 1 and 2, while 1&rsquo;s neighbor is 0 and 2. But the 0 and 2 is already found.
+2. deep copy. Pay attention to the neighbors of old nodes and new nodes. <code>newNode-&gt;neighbors.push_back(map[n]);</code></p>
+
+<p>There are other methods like recursion DFS, non-recursion DFS and using array instead of queue.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -196,6 +339,10 @@ cannot load such file -- mach (LoadError)
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/11/06/clone-graph/">Clone Graph</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/11/01/my-first-blog-article/">Octopress + Github搭建个人博客</a>
       </li>
     
@@ -216,11 +363,11 @@ cannot load such file -- mach (LoadError)
 
 <section>
   <h1>Categories</h1>
-    <ul id="category-list"><li><a href='/blog/categories/octopress/'>octopress (1)</a></li></ul>
+    <ul id="category-list"><li><a href='/blog/categories/algorithms/'>algorithms (1)</a></li><li><a href='/blog/categories/octopress/'>octopress (1)</a></li></ul>
 </section>
 <section>
   <h1>Tag Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/octopress' style='font-size: 160.0%'>octopress(1)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/algorithms' style='font-size: 160.0%'>algorithms(1)</a> <a href='/blog/categories/octopress' style='font-size: 160.0%'>octopress(1)</a> </span>
 </section>
 <section>
     <h1>新浪微博</h1>
